@@ -82,7 +82,7 @@ public class Server {
                         case "SHUTDOWN":
                             if (strSplit.length > 1) {
                                 System.out.println("Unknown command received: " + strReceived);
-                                outputToClient.writeUTF("300 invalid command");
+                                outputToClient.writeUTF("301 message format error");
                                 break;
                             } 
                             else {
@@ -96,7 +96,7 @@ public class Server {
                         case "LOGOUT":
                             if (strSplit.length > 1) {
                                 System.out.println("Unknown command received: " + strReceived);
-                                outputToClient.writeUTF("300 invalid command");
+                                outputToClient.writeUTF("301 message format error");
                                 break;
                             } 
                             else {
