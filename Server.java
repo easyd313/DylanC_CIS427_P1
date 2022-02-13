@@ -79,17 +79,31 @@ public class Server {
                                 outputToClient.writeUTF(ListSolutions(loginState));
                             }
                             break;
-                        case "SHUTDOWN": 
-                            System.out.println("Shutting down server...");
-                            outputToClient.writeUTF("200 OK");
-                            serverSocket.close();
-                            socket.close();
-                            serverUp = false;
+                        case "SHUTDOWN":
+                            if (strSplit.length > 1) {
+                                System.out.println("Unknown command received: " + strReceived);
+                                outputToClient.writeUTF("300 invalid command");
+                                break;
+                            } 
+                            else {
+                                System.out.println("Shutting down server...");
+                                outputToClient.writeUTF("200 OK");
+                                serverSocket.close();
+                                socket.close();
+                                serverUp = false;
+                            }                           
                             break;
                         case "LOGOUT":
-                            System.out.println("LOGGING OUT USER: " + loginState);
-                            outputToClient.writeUTF("200 OK");
-                            loginState = "";
+                            if (strSplit.length > 1) {
+                                System.out.println("Unknown command received: " + strReceived);
+                                outputToClient.writeUTF("300 invalid command");
+                                break;
+                            } 
+                            else {
+                                System.out.println("LOGGING OUT USER: " + loginState);
+                                outputToClient.writeUTF("200 OK");
+                                loginState = "";
+                            }
                             break;
                         default:   
                             System.out.println("Unknown command received: " + strReceived);
@@ -153,8 +167,8 @@ public class Server {
     public static void LoginUser(String user, String pass, DataOutputStream outputToClient) {
         try {
             for(int i = 0; i < loginList.length; ++i) {     // search for user info in login list
-                if (loginList[i].username.equalsIgnoreCase(user)) {
-                    if (loginList[i].password.equalsIgnoreCase(pass)) {
+                if (loginList[i].username.equals(user)) {
+                    if (loginList[i].password.equals(pass)) {
                         loginState = user;
                         System.out.println("SUCCESS");
                         outputToClient.writeUTF("SUCCESS");
